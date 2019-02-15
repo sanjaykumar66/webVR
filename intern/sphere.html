@@ -1,0 +1,127 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+    <title>
+      VR Sphere
+    </title>
+	    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/dctask-21c06.appspot.com/o/glass.jpg?alt=media&token=f5065b6f-1bb2-4016-b33e-24b75e190ffe" type="image/gif" sizes="18x18">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene id="s1">
+        <a-assets>
+                <img id="up" src=""/>
+        </a-assets>
+            <a-sky src="img/img.jpg"></a-sky>
+              <a-entity camera look-controls position="0 2 1">
+                <a-cursor color="cyan">
+                </a-cursor></a-entity>
+                
+            
+    </a-scene>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+<script>
+    var config = {
+    apiKey: 
+    authDomain: 
+    databaseURL: 
+    projectId: 
+    storageBucket: 
+    messagingSenderId: //Get the Firebase Account//
+  };
+  firebase.initializeApp(config);
+  var imageurl = [];
+    var index=0;
+    var dref = firebase.database().ref('url/');
+    dref.on("value", function(snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function(data) {
+            imageurl.push(data.val());
+            ////alert(imageurl);
+        });
+    });
+  var count;
+  var i,k;
+  var ref = firebase.database().ref('count/');
+  ref.on("value", function(snapshot) {
+   count=snapshot.val();
+   var scene = document.querySelector('#s1');
+   AFRAME.registerComponent('do-something-once-loaded', {
+  update: function () {
+    // This will be called after the entity has properly attached and loaded.
+    //alert("sanjay");
+    var el=this.el;
+    //alert(el.getAttribute('material').src);
+    next(el);
+    console.log('I am ready!');
+  }
+});
+   for(i=1,k=0,y=-3;i<=count;i++)
+   {
+      var e='e'+i;
+      e=document.createElement('a-entity');
+      e.setAttribute('geometry',{
+        primitive: 'sphere',
+        radius: '1.5'
+      },'light',{
+        type: 'point',
+        color: 'white',
+        intensity: '2'
+      },'material',{
+        color: 'white',
+        shader: 'flat', 
+        src:''
+      });
+      e.setAttribute('position', {x:  y, y: 0.7, z: -5 });
+      k=k+5;
+      y=y+5;
+      e.setAttribute('id','e'+i);
+      var temp=imageurl[i-1];
+      ////alert(temp);
+      e.setAttribute('material','src',temp);
+      e.setAttribute('do-something-once-loaded', '');
+      scene.appendChild(e);
+      
+   }
+   console.log(count);
+}, function (error) {
+   console.log("Error: " + error.code);
+});
+
+var count;
+  var i,k;
+  var ref = firebase.database().ref('count/');
+  ref.on("value", function(snapshot) {
+   count=snapshot.val();
+   var scene = document.querySelector('#s1');
+   for(i=1,k=0;i<=count;i++,k+8)
+   {
+      var e='#e'+i;
+      var tar=document.querySelector(e);
+      var tar1=document.getElementById('e'+i);
+      ////alert(tar1);
+      //tar.addEventListener('click', next(tar1));
+}
+   console.log(count);
+}, function (error) {
+   console.log("Error: " + error.code);
+});
+function next(b)
+{
+      ////alert(b);
+      //var tar1=document.getElementById(b);
+      ////alert(tar1.getAttribute('material.color'));
+      var url=b.getAttribute('material').src;
+      //alert(url);
+      b.addEventListener('click',function(){
+        var dbref=firebase.database();
+			  dbref.ref().child('finalurl/').set(url);
+        window.location.href="image.html";
+});
+}
+
+</script>
+  </body>
+</html>

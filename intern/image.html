@@ -1,0 +1,46 @@
+<html><head>
+    <title>
+       View Image
+    </title>
+    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/dctask-21c06.appspot.com/o/glass.jpg?alt=media&token=f5065b6f-1bb2-4016-b33e-24b75e190ffe" type="image/gif" sizes="18x18">
+    <script src="js/main.js"></script>
+                <script src="js/sphere.js"></script>
+</head>
+    <body>
+        <a-scene>
+                <a-assets>
+                        <img id="img" crossorigin="anonymous" src="">
+                 </a-assets>
+            <a-sky id="img1" material=" src: " rotation="0 -130 0"></a-sky>
+          </a-scene>
+            <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-database.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+          <script>
+                var config = {
+                 apiKey: 
+                 authDomain: 
+                 databaseURL: 
+                 projectId: 
+                 storageBucket: 
+                 messagingSenderId: //Get Api Key from Firebase account//
+                    };
+        firebase.initializeApp(config);
+                    var tar=document.getElementById('img1');
+                    tar.setAttribute('do-something-once-loaded', '');
+        AFRAME.registerComponent('do-something-once-loaded', {
+        update: function () {
+            //alert("sanjay");
+            var el=this.el;
+            //alert(el.id);
+            var dref = firebase.database().ref('finalurl/');
+                dref.on("value", function(snapshot) {
+                    var url=snapshot.val();
+                el.setAttribute('material','src',url);
+            //alert(el.getAttribute('material').src);
+    });
+        }
+});
+          </script>
+    </body>
+</html>

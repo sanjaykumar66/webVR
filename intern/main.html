@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>
+            Upload
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+         <meta charset="utf-8">
+         <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/dctask-21c06.appspot.com/o/glass.jpg?alt=media&token=f5065b6f-1bb2-4016-b33e-24b75e190ffe" type="image/gif" sizes="18x18">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    </head>
+
+    <body style="background: url('img/b.jpg');background-position: center;background-size: cover;">
+      
+      <div class="container" >
+        <br><br><br><br><br><br><br><br><br>
+
+          <form style="width:27%">
+        <input class="btn btn-primary mr-2 page-scroll" type="file" accept="image/*" id="up" style="font-family: Copperplate Gothic Light;font-weight: bold;color: black;font-size: 15px;background-color: #0024A8;width:300px" />
+
+        <br><br><br>
+
+        <button type="button" class="btn btn-primary" id="next" style="font-family: Copperplate Gothic Light;font-weight: bold;color: black;font-size: 25px;background-color: #0024A8" onclick="move();">enter into VR world</button>
+        </form>
+ </div>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+        <script>
+var config = {
+    apiKey: 
+    authDomain: 
+    databaseURL: 
+    projectId: 
+    storageBucket: 
+    messagingSenderId: //Get the Api key from Firebase Account//
+  };
+  firebase.initializeApp(config);
+  var fileButton = document.getElementById("up");
+              fileButton.addEventListener('change', function(e){
+                  var file = e.target.files[0];
+                  var storageRef = firebase.storage().ref('intern/'+ file.name).put(file);
+					storageRef.on('state_changed', (snapshot) => {
+							// Observe state change events such as progress, pause, and resume
+								}, (error) => {
+										// Handle unsuccessful uploads
+										console.log(error);
+									}, () => {
+										// Do something once upload is complete
+	storageRef.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+    console.log('File available at', downloadURL);
+	var name= file.name;
+	console.log(file.name);
+	name = name.substring(0, name.indexOf('.'));
+	console.log(name);
+	var dbref=firebase.database();
+			dbref.ref().child('url/' + name).set(downloadURL);
+      if(downloadURL)
+	        alert("uploaded successfully");
+  });
+  
+								});
+			  });    
+          function move(){
+        var ref = firebase.database().ref('url/');
+ref.on("value", function(snapshot) {
+    count=snapshot.numChildren();
+    console.log("There are "+snapshot.numChildren()+" messages");
+    var dbref=firebase.database();
+			dbref.ref().child('count/' + name).set(snapshot.numChildren());
+window.location.href="sphere.html";
+}, function (error) {
+   console.log("Error: " + error.code);
+});
+}  
+        </script>
+    </body>
+</html>

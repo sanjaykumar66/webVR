@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://dctask-21c06.firebaseapp.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
